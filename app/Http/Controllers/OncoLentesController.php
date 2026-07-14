@@ -37,6 +37,7 @@ class OncoLentesController extends Controller
 
         $originalPath = null;
         $enhancedPath = null;
+        $pipelineNotice = null;
         $etapa = 'validacao';
         $requestId = (string) ($request->header('X-Railway-Request-Id') ?: $request->header('X-Request-Id') ?: $request->header('X-Correlation-Id') ?: 'sem-request-id');
 
@@ -49,7 +50,25 @@ class OncoLentesController extends Controller
 
             // 2) Melhora imagem com Real-ESRGAN via Replicate.
             $etapa = 'melhoria_replicate';
-            $enhancedPath = $this->replicateService->enhanceAndStore($originalAbsolute, $publicBaseUrl);
+            try {
+                $enhancedPath = $this->replicateService->enhanceAndStore($originalAbsolute, $publicBaseUrl);
+            } catch (Throwable $replicateError) {
+                $replicateMessage = strtolower($replicateError->getMessage());
+
+                if (! str_contains($replicateMessage, 'status":429') && ! str_contains($replicateMessage, 'throttled')) {
+                    throw $replicateError;
+                }
+
+                // Modo degradado para demo: continua sem melhoria quando API está limitada.
+                $enhancedPath = $originalPath;
+                $pipelineNotice = 'A melhoria de imagem (Replicate) foi temporariamente limitada por cota da API. A classificação foi executada com a imagem original.';
+
+                Log::warning('Replicate em rate limit; seguindo com imagem original', [
+                    'request_id' => $requestId,
+                    'message' => $replicateError->getMessage(),
+                ]);
+            }
+
             $enhancedAbsolute = Storage::disk('public')->path($enhancedPath);
 
             // 3) Classifica risco da lesão com modelo da Hugging Face.
@@ -71,6 +90,7 @@ class OncoLentesController extends Controller
             return view('resultados', [
                 'analysis' => $analysis,
                 'labelOriginal' => $resultado['label_original'] ?? null,
+                'pipelineNotice' => $pipelineNotice,
             ]);
         } catch (Throwable $e) {
             Log::error('Erro no pipeline OncoLentes', [

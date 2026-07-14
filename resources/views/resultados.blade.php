@@ -89,6 +89,13 @@
             </section>
         </section>
 
+        @if (!empty($pipelineNotice))
+            <section class="mt-6 rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
+                <p class="font-semibold">Observação de processamento</p>
+                <p class="mt-1">{{ $pipelineNotice }}</p>
+            </section>
+        @endif
+
         <section class="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
             <p class="font-semibold">Aviso legal</p>
             <p class="mt-1">
