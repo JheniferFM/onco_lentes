@@ -36,7 +36,7 @@
           <p class="mt-2 text-sm text-slate-600">Acesse o protótipo de pitch com segurança e agilidade.</p>
         </div>
 
-        <form class="mt-8 space-y-4" action="/dashboard.html" method="get">
+        <form id="loginForm" class="mt-8 space-y-4" action="/dashboard.html" method="get">
           <div>
             <label for="usuario" class="mb-2 block text-sm font-semibold text-slate-700">Usuário</label>
             <input id="usuario" type="text" placeholder="seu.usuario" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20" />
@@ -47,7 +47,7 @@
             <input id="senha" type="password" placeholder="••••••••" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20" />
           </div>
 
-          <button type="submit" class="w-full rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0a2644]">
+          <button id="loginButton" type="submit" class="w-full rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0a2644]">
             Entrar
           </button>
         </form>
@@ -57,5 +57,12 @@
         </div>
       </section>
     </main>
+
+    <script>
+      document.getElementById('loginForm')?.addEventListener('submit', function (event) {
+        event.preventDefault();
+        window.location.href = '/dashboard.html';
+      });
+    </script>
   </body>
 </html>
