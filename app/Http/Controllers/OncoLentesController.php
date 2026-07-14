@@ -36,21 +36,28 @@ class OncoLentesController extends Controller
         ]);
 
         $originalPath = null;
+        $enhancedPath = null;
+        $etapa = 'validacao';
+        $requestId = (string) ($request->header('X-Railway-Request-Id') ?: $request->header('X-Request-Id') ?: $request->header('X-Correlation-Id') ?: 'sem-request-id');
 
         try {
             // 1) Salva imagem original em armazenamento público.
+            $etapa = 'salvando_imagem_original';
             $originalPath = $request->file('imagem')->store('analises/originais', 'public');
             $originalAbsolute = Storage::disk('public')->path($originalPath);
             $publicBaseUrl = $request->getSchemeAndHttpHost();
 
             // 2) Melhora imagem com Real-ESRGAN via Replicate.
+            $etapa = 'melhoria_replicate';
             $enhancedPath = $this->replicateService->enhanceAndStore($originalAbsolute, $publicBaseUrl);
             $enhancedAbsolute = Storage::disk('public')->path($enhancedPath);
 
             // 3) Classifica risco da lesão com modelo da Hugging Face.
+            $etapa = 'classificacao_huggingface';
             $resultado = $this->huggingFaceService->classify($enhancedAbsolute);
 
             // 4) Persiste análise para histórico territorial do SUS.
+            $etapa = 'persistencia_banco';
             $analysis = PatientAnalysis::create([
                 'nome' => $validated['nome'],
                 'idade' => $validated['idade'],
@@ -69,15 +76,25 @@ class OncoLentesController extends Controller
             Log::error('Erro no pipeline OncoLentes', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
+                'request_id' => $requestId,
+                'etapa' => $etapa,
+                'nome' => $validated['nome'] ?? null,
+                'cidade_estado' => $validated['cidade_estado'] ?? null,
+                'imagem_original' => $originalPath,
+                'imagem_melhorada' => $enhancedPath,
             ]);
 
             if ($originalPath) {
                 Storage::disk('public')->delete($originalPath);
             }
 
+            if ($enhancedPath) {
+                Storage::disk('public')->delete($enhancedPath);
+            }
+
             return back()
                 ->withInput()
-                ->with('erro', 'Não foi possível concluir a análise agora. Verifique a imagem e tente novamente em instantes.');
+                ->with('erro', 'Não foi possível concluir a análise agora. Verifique a imagem e tente novamente em instantes. Código: '.$requestId);
         }
     }
 }

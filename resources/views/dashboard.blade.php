@@ -86,6 +86,7 @@
                 @if (session('erro'))
                     <div class="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                         {{ session('erro') }}
+                        <p class="mt-2 text-xs text-red-600">Use o código exibido acima para localizar a falha correspondente nos logs do Railway.</p>
                     </div>
                 @endif
 
