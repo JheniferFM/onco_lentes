@@ -35,4 +35,36 @@ class OncoLentesControllerTest extends TestCase
 
         $this->assertSame($remoteUrl, $controller->buildImageUrl($remoteUrl));
     }
+
+    public function test_builds_contingency_classification_result_from_patient_name(): void
+    {
+        $controller = new OncoLentesController(
+            app(CloudinaryService::class),
+            app(ReplicateService::class),
+        );
+
+        $nome = 'Maria';
+        $resultado = $controller->buildContingencyClassificationResult($nome);
+        $riskIndex = abs(crc32($nome)) % 3;
+
+        $expected = match ($riskIndex) {
+            0 => [
+                'risco' => 'Baixo',
+                'confianca' => 92.0,
+                'label_original' => 'Melanocítico Benigno',
+            ],
+            1 => [
+                'risco' => 'Médio',
+                'confianca' => 76.0,
+                'label_original' => 'Ceratose Actínica',
+            ],
+            default => [
+                'risco' => 'Alto',
+                'confianca' => 88.0,
+                'label_original' => 'Melanoma Maligno',
+            ],
+        };
+
+        $this->assertSame($expected, $resultado);
+    }
 }
