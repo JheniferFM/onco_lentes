@@ -11,10 +11,12 @@ class HuggingFaceService
 
     private string $modelUrl;
 
+    private string $defaultModelUrl = 'https://api-inference.huggingface.co/models/dima806/skin_cancer_image_detection';
+
     public function __construct()
     {
         $this->token = (string) config('services.huggingface.token');
-        $this->modelUrl = (string) config('services.huggingface.model_url');
+        $this->modelUrl = $this->normalizeModelUrl((string) config('services.huggingface.model_url'));
     }
 
     public function classify(string $localImagePath): array
@@ -121,5 +123,33 @@ class HuggingFaceService
         }
 
         return 'Médio';
+    }
+
+    private function normalizeModelUrl(string $configured): string
+    {
+        $value = trim($configured);
+
+        if ($value === '') {
+            return $this->defaultModelUrl;
+        }
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
+        }
+
+        if (str_starts_with($value, 'api-inference.huggingface.co/')) {
+            return 'https://'.$value;
+        }
+
+        if (str_starts_with($value, 'huggingface.co/')) {
+            return preg_replace('#^huggingface\.co/models/#', 'https://api-inference.huggingface.co/models/', $value) ?: $this->defaultModelUrl;
+        }
+
+        // Aceita model id puro, ex: dima806/skin_cancer_image_detection
+        if (str_contains($value, '/')) {
+            return 'https://api-inference.huggingface.co/models/'.ltrim($value, '/');
+        }
+
+        return $this->defaultModelUrl;
     }
 }
