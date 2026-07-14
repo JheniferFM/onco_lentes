@@ -59,16 +59,12 @@ class ReplicateService
         return $enhancedPath;
     }
 
-    public function classifyAndMapRisk(string $localImagePath, ?string $publicBaseUrl = null): array
+    public function classifyAndMapRisk(string $imagePathOrUrl, ?string $publicBaseUrl = null): array
     {
         $token = (string) config('services.replicate.token');
 
         if ($token === '') {
             throw new Exception('Token do Replicate não configurado. Defina REPLICATE_API_TOKEN no arquivo .env.');
-        }
-
-        if (! is_file($localImagePath)) {
-            throw new Exception('Imagem não encontrada para classificação no Replicate.');
         }
 
         $classifierModel = trim((string) config('services.replicate.classifier_model'));
@@ -77,7 +73,16 @@ class ReplicateService
             throw new Exception('Modelo de classificação não configurado. Defina REPLICATE_CLASSIFIER_MODEL no .env.');
         }
 
-        $prediction = $this->createPredictionWithFallback($token, $classifierModel, $localImagePath, $publicBaseUrl);
+        if (filter_var($imagePathOrUrl, FILTER_VALIDATE_URL)) {
+            $prediction = $this->createPrediction($token, $classifierModel, $imagePathOrUrl, 'url_remota');
+        } else {
+            if (! is_file($imagePathOrUrl)) {
+                throw new Exception('Imagem não encontrada para classificação no Replicate.');
+            }
+
+            $prediction = $this->createPredictionWithFallback($token, $classifierModel, $imagePathOrUrl, $publicBaseUrl);
+        }
+
         $predictionId = data_get($prediction, 'id');
 
         if (! $predictionId) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PatientAnalysis;
+use App\Services\CloudinaryService;
 use App\Services\ReplicateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,6 +13,7 @@ use Throwable;
 class OncoLentesController extends Controller
 {
     public function __construct(
+        private readonly CloudinaryService $cloudinaryService,
         private readonly ReplicateService $replicateService,
     ) {
     }
@@ -46,33 +48,25 @@ class OncoLentesController extends Controller
             $originalAbsolute = Storage::disk('public')->path($originalPath);
             $publicBaseUrl = $request->getSchemeAndHttpHost();
 
-            // 2) Melhora imagem com Real-ESRGAN via Replicate.
-            $etapa = 'melhoria_replicate';
+            // 2) Melhora imagem com Cloudinary.
+            $etapa = 'melhoria_cloudinary';
             try {
-                $enhancedPath = $this->replicateService->enhanceAndStore($originalAbsolute, $publicBaseUrl);
-            } catch (Throwable $replicateError) {
-                $replicateMessage = strtolower($replicateError->getMessage());
-
-                if (! str_contains($replicateMessage, 'status":429') && ! str_contains($replicateMessage, 'throttled')) {
-                    throw $replicateError;
-                }
-
-                // Modo degradado para demo: continua sem melhoria quando API está limitada.
+                $enhancedPath = $this->cloudinaryService->enhanceAndStore($originalAbsolute);
+            } catch (Throwable $cloudinaryError) {
                 $enhancedPath = $originalPath;
-                $pipelineNotice = 'A melhoria de imagem (Replicate) foi temporariamente limitada por cota da API. A classificação foi executada com a imagem original.';
+                $pipelineNotice = 'A melhoria de imagem (Cloudinary) ficou temporariamente indisponível. A classificação foi executada com a imagem original.';
 
-                Log::warning('Replicate em rate limit; seguindo com imagem original', [
+                Log::warning('Cloudinary indisponível; seguindo com imagem original', [
                     'request_id' => $requestId,
-                    'message' => $replicateError->getMessage(),
+                    'message' => $cloudinaryError->getMessage(),
                 ]);
             }
-
-            $enhancedAbsolute = Storage::disk('public')->path($enhancedPath);
 
             // 3) Classifica risco da lesão com modelo de classificação no Replicate.
             $etapa = 'classificacao_replicate';
             try {
-                $resultado = $this->replicateService->classifyAndMapRisk($enhancedAbsolute, $publicBaseUrl);
+                $classificationInput = str_starts_with($enhancedPath, 'http') ? $enhancedPath : Storage::disk('public')->path($enhancedPath);
+                $resultado = $this->replicateService->classifyAndMapRisk($classificationInput, $publicBaseUrl);
             } catch (Throwable $classificationError) {
                 // Modo degradado: mantém operação da plataforma mesmo em instabilidade externa.
                 $resultado = [
@@ -122,7 +116,7 @@ class OncoLentesController extends Controller
                 Storage::disk('public')->delete($originalPath);
             }
 
-            if ($enhancedPath) {
+            if ($enhancedPath && ! str_starts_with($enhancedPath, 'http')) {
                 Storage::disk('public')->delete($enhancedPath);
             }
 
