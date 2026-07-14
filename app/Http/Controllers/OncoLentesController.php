@@ -95,8 +95,18 @@ class OncoLentesController extends Controller
                 'percentual_confianca' => $resultado['confianca'],
             ]);
 
+            $imagemOriginalUrl = str_starts_with((string) $analysis->caminho_imagem_original, 'http')
+                ? $analysis->caminho_imagem_original
+                : Storage::url($analysis->caminho_imagem_original);
+
+            $imagemMelhoradaUrl = str_starts_with((string) $analysis->caminho_imagem_melhorada, 'http')
+                ? $analysis->caminho_imagem_melhorada
+                : Storage::url($analysis->caminho_imagem_melhorada);
+
             return view('resultados', [
                 'analysis' => $analysis,
+                'imagemOriginalUrl' => $imagemOriginalUrl,
+                'imagemMelhoradaUrl' => $imagemMelhoradaUrl,
                 'labelOriginal' => $resultado['label_original'] ?? null,
                 'pipelineNotice' => $pipelineNotice,
             ]);

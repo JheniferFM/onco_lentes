@@ -15,9 +15,6 @@
                 'Alto' => 'bg-red-100 text-red-800 border-red-200',
                 default => 'bg-slate-100 text-slate-800 border-slate-200',
             };
-            $enhancedImageUrl = str_starts_with((string) $analysis->caminho_imagem_melhorada, 'http')
-                ? $analysis->caminho_imagem_melhorada
-                : Storage::disk('public')->url($analysis->caminho_imagem_melhorada);
         @endphp
 
         <header class="rounded-2xl bg-white p-6 shadow-sm">
@@ -71,14 +68,14 @@
 
                 <div class="relative mt-4 h-80 overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 sm:h-[28rem]">
                     <img
-                        src="{{ Storage::disk('public')->url($analysis->caminho_imagem_original) }}"
+                        src="{{ $imagemOriginalUrl }}"
                         alt="Imagem original"
                         class="absolute inset-0 h-full w-full object-contain"
                     >
 
                     <div class="absolute inset-0 overflow-hidden" :style="`width: ${comparacao}%`">
                         <img
-                            src="{{ $enhancedImageUrl }}"
+                            src="{{ $imagemMelhoradaUrl }}"
                             alt="Imagem melhorada"
                             class="h-full w-full object-contain"
                         >
