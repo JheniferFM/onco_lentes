@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 class ReplicateService
 {
     private string $baseUrl = 'https://api.replicate.com/v1';
+    private string $defaultModel = 'nightmareai/real-esrgan';
 
     public function enhanceAndStore(string $localImagePath, ?string $publicBaseUrl = null): string
     {
@@ -23,13 +24,24 @@ class ReplicateService
             throw new Exception('Imagem original não encontrada para melhoria.');
         }
 
-        $modelVersion = (string) config('services.replicate.version');
+        $modelVersion = $this->resolveModelVersion($token);
 
-        if ($modelVersion === '') {
-            throw new Exception('Versão do modelo Real-ESRGAN não configurada. Defina REPLICATE_REAL_ESRGAN_VERSION no .env.');
+        try {
+            $prediction = $this->createPredictionWithFallback($token, $modelVersion, $localImagePath, $publicBaseUrl);
+        } catch (Exception $e) {
+            if (! $this->isInvalidVersionError($e->getMessage())) {
+                throw $e;
+            }
+
+            // Fallback automático para lidar com versão fixa expirada/inválida no .env.
+            $latestVersion = $this->fetchLatestVersionId($token, $this->configuredModel());
+
+            if ($latestVersion === '' || $latestVersion === $modelVersion) {
+                throw $e;
+            }
+
+            $prediction = $this->createPredictionWithFallback($token, $latestVersion, $localImagePath, $publicBaseUrl);
         }
-
-        $prediction = $this->createPredictionWithFallback($token, $modelVersion, $localImagePath, $publicBaseUrl);
         $predictionId = data_get($prediction, 'id');
 
         if (! $predictionId) {
@@ -175,6 +187,57 @@ class ReplicateService
         }
 
         return $payload;
+    }
+
+    private function resolveModelVersion(string $token): string
+    {
+        $configured = trim((string) config('services.replicate.version'));
+
+        if ($configured !== '') {
+            return $configured;
+        }
+
+        return $this->fetchLatestVersionId($token, $this->configuredModel());
+    }
+
+    private function configuredModel(): string
+    {
+        $configuredModel = trim((string) config('services.replicate.model', $this->defaultModel));
+
+        return $configuredModel !== '' ? $configuredModel : $this->defaultModel;
+    }
+
+    private function fetchLatestVersionId(string $token, string $model): string
+    {
+        [$owner, $name] = array_pad(explode('/', $model, 2), 2, null);
+
+        if (! $owner || ! $name) {
+            throw new Exception('Modelo Replicate inválido. Use o formato owner/model em REPLICATE_MODEL.');
+        }
+
+        $response = Http::withToken($token)
+            ->acceptJson()
+            ->timeout(30)
+            ->get("{$this->baseUrl}/models/{$owner}/{$name}");
+
+        if ($response->failed()) {
+            throw new Exception('Falha ao consultar versão do modelo no Replicate: '.$response->body());
+        }
+
+        $latestVersion = (string) data_get($response->json(), 'latest_version.id', '');
+
+        if ($latestVersion === '') {
+            throw new Exception('Não foi possível identificar latest_version.id do modelo no Replicate.');
+        }
+
+        return $latestVersion;
+    }
+
+    private function isInvalidVersionError(string $message): bool
+    {
+        $needle = strtolower($message);
+
+        return str_contains($needle, 'invalid version') || str_contains($needle, 'does not exist');
     }
 
     private function toPublicStorageUrl(string $localImagePath, ?string $publicBaseUrl = null): ?string
