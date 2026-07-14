@@ -36,7 +36,7 @@
           <p class="mt-2 text-sm text-slate-600">Acesse o protótipo de pitch com segurança e agilidade.</p>
         </div>
 
-        <form id="loginForm" class="mt-8 space-y-4" action="/dashboard.html" method="get">
+        <form id="loginForm" class="mt-8 space-y-4" action="https://oncolentes-production.up.railway.app/dashboard.html" method="get">
           <div>
             <label for="usuario" class="mb-2 block text-sm font-semibold text-slate-700">Usuário</label>
             <input id="usuario" type="text" placeholder="seu.usuario" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20" />
@@ -47,13 +47,13 @@
             <input id="senha" type="password" placeholder="••••••••" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20" />
           </div>
 
-          <button id="loginButton" type="submit" class="w-full rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0a2644]">
+          <button id="loginButton" type="submit" class="inline-flex w-full items-center justify-center rounded-2xl bg-[#0c2d59] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#427fe2]">
             Entrar
           </button>
         </form>
 
         <div class="mt-6 text-center text-sm">
-          <a href="/dashboard.html" class="font-medium text-brand hover:text-[#2f6dd1]">Continuar para o dashboard</a>
+          <a href="https://oncolentes-production.up.railway.app/dashboard.html" class="font-medium text-brand hover:text-[#2f6dd1]">Continuar para o dashboard</a>
         </div>
       </section>
     </main>
@@ -61,7 +61,7 @@
     <script>
       document.getElementById('loginForm')?.addEventListener('submit', function (event) {
         event.preventDefault();
-        window.location.href = '/dashboard.html';
+        window.location.href = 'https://oncolentes-production.up.railway.app/dashboard.html';
       });
     </script>
   </body>
