@@ -73,7 +73,32 @@ class OncoLentesController extends Controller
 
             // 3) Classifica risco da lesão com modelo da Hugging Face.
             $etapa = 'classificacao_huggingface';
-            $resultado = $this->huggingFaceService->classify($enhancedAbsolute);
+            try {
+                $resultado = $this->huggingFaceService->classify($enhancedAbsolute);
+            } catch (Throwable $huggingFaceError) {
+                $hfMessage = strtolower($huggingFaceError->getMessage());
+
+                if (! str_contains($hfMessage, 'could not resolve host')
+                    && ! str_contains($hfMessage, 'curl error 6')
+                    && ! str_contains($hfMessage, 'timed out')
+                    && ! str_contains($hfMessage, 'failed to connect')) {
+                    throw $huggingFaceError;
+                }
+
+                // Modo degradado para indisponibilidade externa da API de classificação.
+                $resultado = [
+                    'risco' => 'Médio',
+                    'confianca' => 0.00,
+                    'label_original' => 'classificacao_indisponivel',
+                ];
+
+                $pipelineNotice = 'A classificação automática (Hugging Face) ficou temporariamente indisponível por rede. O caso foi registrado com risco provisório MÉDIO para triagem e revisão clínica.';
+
+                Log::warning('Hugging Face indisponível por rede; usando risco provisório', [
+                    'request_id' => $requestId,
+                    'message' => $huggingFaceError->getMessage(),
+                ]);
+            }
 
             // 4) Persiste análise para histórico territorial do SUS.
             $etapa = 'persistencia_banco';
