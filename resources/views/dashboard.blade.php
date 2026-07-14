@@ -12,10 +12,10 @@
             <div class="flex items-center justify-between gap-4">
                 <div class="flex-1"></div>
                 <div class="flex flex-1 justify-center">
-                    <img src="{{ asset('gemini-svg.svg') }}" alt="Logo OncoLentes" class="h-24 w-64 object-contain sm:h-28 sm:w-72" />
+                    <img src="{{ asset('gemini-svg.svg') }}" alt="Logo OncoLentes" class="h-28 w-72 object-contain sm:h-32 sm:w-80" />
                 </div>
                 <div class="flex flex-1 justify-end">
-                    <a href="{{ route('login') }}" class="inline-flex items-center bg-transparent px-0 py-0 text-sm font-semibold text-[#0c2d59] transition hover:text-[#427fe2]">
+                    <a href="{{ route('login') }}" class="inline-flex items-center rounded-full bg-[#111827] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1f2937]">
                         Login
                     </a>
                 </div>
