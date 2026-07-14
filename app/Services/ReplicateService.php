@@ -59,10 +59,12 @@ class ReplicateService
             throw new Exception('Não foi possível obter a imagem melhorada do Replicate.');
         }
 
-        $download = Http::timeout(120)->get($outputUrl);
+        $download = Http::withToken($token)
+            ->timeout(120)
+            ->get($outputUrl);
 
         if ($download->failed() || $download->body() === '') {
-            throw new Exception('Falha ao baixar a imagem melhorada do Replicate.');
+            throw new Exception('Falha ao baixar a imagem melhorada do Replicate: '.$download->body());
         }
 
         $extension = $this->guessExtensionFromUrl($outputUrl);
