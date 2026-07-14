@@ -129,10 +129,28 @@
                             </label>
                             <div class="rounded-2xl border border-cyan-800 bg-cyan-950/60 p-3 text-sm text-cyan-50">
                                 <p class="font-semibold">Validação local</p>
-                                <ul class="mt-2 list-disc pl-4 text-xs text-cyan-100/90">
-                                    <li>Foco nítido</li>
-                                    <li>Iluminação uniforme</li>
-                                    <li>Régua visível</li>
+                                <ul class="mt-2 space-y-2 text-xs text-cyan-100/90">
+                                    <li id="validationFocus" class="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-2 py-2">
+                                        <span class="flex items-center gap-2">
+                                            <span id="validationFocusIcon" class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[10px]">•</span>
+                                            <span>Foco nítido</span>
+                                        </span>
+                                        <span id="validationFocusStatus" class="text-cyan-300">Aguardando</span>
+                                    </li>
+                                    <li id="validationLighting" class="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-2 py-2">
+                                        <span class="flex items-center gap-2">
+                                            <span id="validationLightingIcon" class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[10px]">•</span>
+                                            <span>Iluminação uniforme</span>
+                                        </span>
+                                        <span id="validationLightingStatus" class="text-cyan-300">Aguardando</span>
+                                    </li>
+                                    <li id="validationRuler" class="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-2 py-2">
+                                        <span class="flex items-center gap-2">
+                                            <span id="validationRulerIcon" class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[10px]">•</span>
+                                            <span>Régua visível</span>
+                                        </span>
+                                        <span id="validationRulerStatus" class="text-cyan-300">Aguardando</span>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -232,6 +250,41 @@
         const previewImage = document.getElementById('previewImage');
         let currentStep = 0;
 
+        function updateValidationState() {
+            const hasFile = Boolean(imageInput.files?.length);
+            const items = [
+                ['validationFocus', 'validationFocusIcon', 'validationFocusStatus'],
+                ['validationLighting', 'validationLightingIcon', 'validationLightingStatus'],
+                ['validationRuler', 'validationRulerIcon', 'validationRulerStatus'],
+            ];
+
+            items.forEach(([rowId, iconId, statusId]) => {
+                const row = document.getElementById(rowId);
+                const icon = document.getElementById(iconId);
+                const status = document.getElementById(statusId);
+
+                if (!row || !icon || !status) {
+                    return;
+                }
+
+                if (hasFile) {
+                    row.classList.add('border-emerald-400/50', 'bg-emerald-500/15');
+                    row.classList.remove('border-white/10', 'bg-white/5');
+                    icon.className = 'inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-bold text-white';
+                    icon.textContent = '✓';
+                    status.className = 'text-emerald-300';
+                    status.textContent = 'Validado';
+                } else {
+                    row.classList.remove('border-emerald-400/50', 'bg-emerald-500/15');
+                    row.classList.add('border-white/10', 'bg-white/5');
+                    icon.className = 'inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[10px]';
+                    icon.textContent = '•';
+                    status.className = 'text-cyan-300';
+                    status.textContent = 'Aguardando';
+                }
+            });
+        }
+
         function updateStep() {
             steps.forEach((step, index) => {
                 step.classList.toggle('hidden', index !== currentStep);
@@ -242,9 +295,11 @@
             nextBtn.classList.toggle('hidden', currentStep === steps.length - 1);
 
             const progress = ((currentStep + 1) / steps.length) * 100;
-            progressBar.style.width = `${progress}%`;
-            progressLabel.textContent = `${currentStep + 1} de ${steps.length}`;
+            const visualProgress = Math.min(100, Math.max(8, progress + 2));
+            progressBar.style.width = `${visualProgress}%`;
+            progressLabel.textContent = `Etapa ${currentStep + 1} de ${steps.length}`;
             updateSummary();
+            updateValidationState();
         }
 
         function updateSummary() {
@@ -288,6 +343,7 @@
             const file = imageInput.files?.[0];
             if (!file) {
                 imagePreview.classList.add('hidden');
+                updateValidationState();
                 return;
             }
 
@@ -298,6 +354,7 @@
             };
             reader.readAsDataURL(file);
             updateSummary();
+            updateValidationState();
         });
 
         document.getElementById('oncolentesWizard').addEventListener('submit', () => {
