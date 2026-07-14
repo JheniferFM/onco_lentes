@@ -29,23 +29,7 @@ class ReplicateService
             throw new Exception('Versão do modelo Real-ESRGAN não configurada. Defina REPLICATE_REAL_ESRGAN_VERSION no .env.');
         }
 
-        $imageInput = $this->resolveImageInput($localImagePath, $publicBaseUrl);
-
-        $predictionResponse = Http::withToken($token)
-            ->acceptJson()
-            ->timeout(60)
-            ->post("{$this->baseUrl}/predictions", [
-                'version' => $modelVersion,
-                'input' => [
-                    'image' => $imageInput,
-                ],
-            ]);
-
-        if ($predictionResponse->failed()) {
-            throw new Exception('Falha ao enviar imagem para o Replicate: '.$predictionResponse->body());
-        }
-
-        $prediction = $predictionResponse->json();
+        $prediction = $this->createPredictionWithFallback($token, $modelVersion, $localImagePath, $publicBaseUrl);
         $predictionId = data_get($prediction, 'id');
 
         if (! $predictionId) {
@@ -146,6 +130,51 @@ class ReplicateService
         }
 
         return $this->toDataUri($localImagePath);
+    }
+
+    private function createPredictionWithFallback(
+        string $token,
+        string $modelVersion,
+        string $localImagePath,
+        ?string $publicBaseUrl = null,
+    ): array {
+        $publicUrl = $this->toPublicStorageUrl($localImagePath, $publicBaseUrl);
+
+        if ($publicUrl !== null) {
+            try {
+                return $this->createPrediction($token, $modelVersion, $publicUrl, 'url_publica');
+            } catch (Exception) {
+                // Fallback: alguns ambientes bloqueiam acesso externo ao /storage.
+                return $this->createPrediction($token, $modelVersion, $this->toDataUri($localImagePath), 'data_uri');
+            }
+        }
+
+        return $this->createPrediction($token, $modelVersion, $this->toDataUri($localImagePath), 'data_uri');
+    }
+
+    private function createPrediction(string $token, string $modelVersion, string $imageInput, string $inputType): array
+    {
+        $response = Http::withToken($token)
+            ->acceptJson()
+            ->timeout(60)
+            ->post("{$this->baseUrl}/predictions", [
+                'version' => $modelVersion,
+                'input' => [
+                    'image' => $imageInput,
+                ],
+            ]);
+
+        if ($response->failed()) {
+            throw new Exception("Falha ao enviar imagem para o Replicate ({$inputType}): ".$response->body());
+        }
+
+        $payload = $response->json();
+
+        if (! is_array($payload)) {
+            throw new Exception('Resposta inválida do Replicate ao criar predição.');
+        }
+
+        return $payload;
     }
 
     private function toPublicStorageUrl(string $localImagePath, ?string $publicBaseUrl = null): ?string

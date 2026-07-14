@@ -94,7 +94,8 @@ class OncoLentesController extends Controller
 
             return back()
                 ->withInput()
-                ->with('erro', 'Não foi possível concluir a análise agora. Verifique a imagem e tente novamente em instantes. Código: '.$requestId);
+                ->with('erro', 'Não foi possível concluir a análise agora. Verifique a imagem e tente novamente em instantes. Código: '.$requestId)
+                ->with('erro_detalhe', str($e->getMessage())->limit(220)->toString());
         }
     }
 }
