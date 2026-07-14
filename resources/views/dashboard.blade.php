@@ -6,38 +6,44 @@
     <title>OncoLentes | Triagem Inteligente SUS</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-slate-100 text-slate-800">
+<body class="min-h-screen bg-[#f4f5f7] text-slate-800">
     <main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-        <header class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-300/70">
-            <div class="flex flex-wrap items-center justify-between gap-4">
-                <div class="flex flex-1 items-center gap-4">
-                    <div class="flex h-20 w-44 shrink-0 items-center justify-center rounded-2xl bg-slate-50 p-2 ring-1 ring-slate-200 sm:h-24 sm:w-56">
-                        <img src="{{ asset('gemini-svg.svg') }}" alt="Logo OncoLentes" class="h-full w-full object-contain" />
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <h1 class="text-xl font-black leading-tight text-slate-900 sm:text-2xl">
-                            Fluxo assistido para captura e triagem de lesões cutâneas
-                        </h1>
-                        <p class="mt-1 text-sm text-slate-600">Triagem territorial com apoio assistido por IA</p>
-                    </div>
+        <header class="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+            <div class="flex items-center justify-between gap-4">
+                <div class="flex-1"></div>
+                <div class="flex flex-1 justify-center">
+                    <img src="{{ asset('gemini-svg.svg') }}" alt="Logo OncoLentes" class="h-16 w-44 object-contain sm:h-20 sm:w-56" />
                 </div>
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('login') }}" class="inline-flex items-center rounded-2xl bg-[#0c2d59] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#427fe2]">
-                        Entrar
+                <div class="flex flex-1 justify-end">
+                    <a href="{{ route('login') }}" class="inline-flex items-center rounded-full bg-[#0c2d59] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#427fe2]">
+                        Login
                     </a>
-                    <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
-                        <p class="font-semibold">Progresso</p>
-                        <p id="progressLabel" class="text-[#427fe2]">1 de 5</p>
-                    </div>
                 </div>
-            </div>
-
-            <div class="mt-5 h-2 rounded-full bg-slate-200">
-                <div id="progressBar" class="h-2 w-[20%] rounded-full bg-gradient-to-r from-[#0c2d59] via-[#427fe2] to-[#4a6fd8] transition-all duration-300"></div>
             </div>
         </header>
 
-        <section class="rounded-[2rem] border border-slate-200 bg-white p-4 text-slate-900 shadow-xl shadow-slate-200/80 sm:p-6">
+        <section class="rounded-[2rem] border border-slate-200 bg-gradient-to-r from-[#0c2d59] via-[#215fc3] to-[#427fe2] p-6 text-white shadow-xl shadow-slate-300/70 sm:p-7">
+            <div class="flex flex-wrap items-start justify-between gap-4">
+                <div class="max-w-3xl">
+                    <p class="text-sm font-semibold uppercase tracking-[0.35em] text-white/80">Fluxo assistido</p>
+                    <h1 class="mt-3 text-2xl font-black leading-tight sm:text-3xl">
+                        Fluxo assistido para captura e triagem de lesões cutâneas
+                    </h1>
+                    <p class="mt-3 max-w-2xl text-sm text-white/85 sm:text-base">
+                        Uma jornada guiada para registrar dados, capturar evidências e gerar uma triagem clínica com apoio de IA.
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/80">Progresso</p>
+                    <p id="progressLabel" class="mt-1 text-lg font-semibold text-white">Etapa 1 de 5</p>
+                </div>
+            </div>
+            <div class="mt-6 h-2 rounded-full bg-white/20">
+                <div id="progressBar" class="h-2 rounded-full bg-white transition-all duration-300" style="width: 12%"></div>
+            </div>
+        </section>
+
+        <section class="rounded-[2rem] border border-slate-200 bg-white p-4 text-slate-900 shadow-sm sm:p-6">
             @if (session('erro'))
                 <div class="mb-4 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                     {{ session('erro') }}
@@ -65,9 +71,9 @@
                 <input type="hidden" name="cidade_estado" id="cidadeEstadoHidden">
 
                 <div data-step="0" class="space-y-4">
-                    <div class="flex items-center gap-2 text-sm font-semibold text-[#0c2d59]">
-                        <span class="rounded-full bg-[#e8effc] px-2.5 py-1">1</span>
-                        Boas-vindas e identificação rápida
+                    <div class="flex items-center gap-3 text-sm font-semibold text-[#0c2d59]">
+                        <span data-step-badge="0" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#427fe2] text-sm font-bold text-white transition-colors">1</span>
+                        <span>Boas-vindas e identificação rápida</span>
                     </div>
                     <div class="grid gap-4 md:grid-cols-2">
                         <label class="block text-sm font-semibold text-slate-700">
@@ -87,27 +93,27 @@
                             <input id="cidadeEstadoInput" type="text" placeholder="Ex.: Recife - PE" class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm focus:border-[#427fe2] focus:outline-none focus:ring-2 focus:ring-[#dce8ff]">
                         </label>
                     </div>
-                    <div class="rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
+                    <div class="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
                         <p class="font-semibold text-slate-900">Orientação rápida</p>
                         <p class="mt-1">Use este primeiro passo para registrar os dados básicos do paciente e preparar a triagem territorial.</p>
                     </div>
                 </div>
 
                 <div data-step="1" class="hidden space-y-4">
-                    <div class="flex items-center gap-2 text-sm font-semibold text-[#0c2d59]">
-                        <span class="rounded-full bg-[#e8effc] px-2.5 py-1">2</span>
-                        Instruções do kit
+                    <div class="flex items-center gap-3 text-sm font-semibold text-[#0c2d59]">
+                        <span data-step-badge="1" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#eaf2ff] text-sm font-bold text-[#0c2d59] transition-colors">2</span>
+                        <span>Instruções do kit</span>
                     </div>
                     <div class="grid gap-3 md:grid-cols-3">
-                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                             <p class="font-semibold text-slate-900">1. Acople a lente macro</p>
                             <p class="mt-2 text-sm text-slate-600">Fixe a lente no celular com cuidado para preservar o enquadramento.</p>
                         </div>
-                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                             <p class="font-semibold text-slate-900">2. Posicione a régua</p>
                             <p class="mt-2 text-sm text-slate-600">Coloque a régua clínica de referência ao lado da lesão para padronizar a imagem.</p>
                         </div>
-                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                             <p class="font-semibold text-slate-900">3. Garanta boa iluminação</p>
                             <p class="mt-2 text-sm text-slate-600">Use luz natural ou uniforme para reduzir sombras e melhorar a análise.</p>
                         </div>
@@ -115,12 +121,12 @@
                 </div>
 
                 <div data-step="2" class="hidden space-y-4">
-                    <div class="flex items-center gap-2 text-sm font-semibold text-[#0c2d59]">
-                        <span class="rounded-full bg-[#e8effc] px-2.5 py-1">3</span>
-                        Câmera inteligente
+                    <div class="flex items-center gap-3 text-sm font-semibold text-[#0c2d59]">
+                        <span data-step-badge="2" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#eaf2ff] text-sm font-bold text-[#0c2d59] transition-colors">3</span>
+                        <span>Câmera inteligente</span>
                     </div>
-                    <div class="rounded-3xl border border-slate-200 bg-slate-950 p-4 text-white">
-                        <div class="relative overflow-hidden rounded-2xl border border-white/20 bg-slate-900 p-4">
+                    <div class="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+                        <div class="relative overflow-hidden rounded-2xl border border-slate-200 bg-[#f7faff] p-4">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="h-40 w-40 rounded-full border-2 border-cyan-400/80"></div>
                                 <div class="absolute h-56 w-56 rounded-full border border-white/20"></div>
@@ -131,9 +137,9 @@
                             </div>
                         </div>
                         <div class="mt-4 grid gap-3 md:grid-cols-[1.3fr_0.7fr]">
-                            <label class="block text-sm font-semibold text-slate-200">
+                            <label class="block text-sm font-semibold text-slate-700">
                                 Foto da lesão (lente macro)
-                                <input id="imagem" name="imagem" type="file" accept=".jpg,.jpeg,.png,.webp" required class="mt-2 block w-full rounded-2xl border border-slate-700 bg-slate-900 px-3 py-3 text-sm text-slate-100 file:mr-3 file:rounded-xl file:border-0 file:bg-[#427fe2] file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white">
+                                <input id="imagem" name="imagem" type="file" accept=".jpg,.jpeg,.png,.webp" required class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#f7faff] px-3 py-3 text-sm text-slate-700 file:mr-3 file:rounded-xl file:border-0 file:bg-[#427fe2] file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white">
                             </label>
                             <div class="rounded-2xl border border-[#dce8ff] bg-[#f4f8ff] p-3 text-sm text-[#0c2d59]">
                                 <p class="font-semibold">Validação local</p>
@@ -170,12 +176,12 @@
                 </div>
 
                 <div data-step="3" class="hidden space-y-4">
-                    <div class="flex items-center gap-2 text-sm font-semibold text-[#0c2d59]">
-                        <span class="rounded-full bg-[#e8effc] px-2.5 py-1">4</span>
-                        Mini-anamnese
+                    <div class="flex items-center gap-3 text-sm font-semibold text-[#0c2d59]">
+                        <span data-step-badge="3" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#eaf2ff] text-sm font-bold text-[#0c2d59] transition-colors">4</span>
+                        <span>Mini-anamnese</span>
                     </div>
                     <div class="grid gap-4 md:grid-cols-2">
-                        <label class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-700">
+                        <label class="rounded-2xl border border-slate-200 bg-white p-4 text-sm font-semibold text-slate-700 shadow-sm">
                             Há coceira na lesão?
                             <select name="anamnese[coceira]" class="mt-2 w-full rounded-2xl border border-slate-300 px-3 py-2 text-sm">
                                 <option value="">Selecione</option>
@@ -184,7 +190,7 @@
                                 <option value="nao_sabe">Não sei</option>
                             </select>
                         </label>
-                        <label class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-700">
+                        <label class="rounded-2xl border border-slate-200 bg-white p-4 text-sm font-semibold text-slate-700 shadow-sm">
                             Há sangramento?
                             <select name="anamnese[sangramento]" class="mt-2 w-full rounded-2xl border border-slate-300 px-3 py-2 text-sm">
                                 <option value="">Selecione</option>
@@ -193,7 +199,7 @@
                                 <option value="nao_sabe">Não sei</option>
                             </select>
                         </label>
-                        <label class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-700">
+                        <label class="rounded-2xl border border-slate-200 bg-white p-4 text-sm font-semibold text-slate-700 shadow-sm">
                             Evolução nas últimas semanas?
                             <select name="anamnese[evolucao]" class="mt-2 w-full rounded-2xl border border-slate-300 px-3 py-2 text-sm">
                                 <option value="">Selecione</option>
@@ -202,7 +208,7 @@
                                 <option value="nao_sabe">Não sei</option>
                             </select>
                         </label>
-                        <label class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-700">
+                        <label class="rounded-2xl border border-slate-200 bg-white p-4 text-sm font-semibold text-slate-700 shadow-sm">
                             Há dor ou sensibilidade?
                             <select name="anamnese[dor]" class="mt-2 w-full rounded-2xl border border-slate-300 px-3 py-2 text-sm">
                                 <option value="">Selecione</option>
@@ -219,15 +225,15 @@
                 </div>
 
                 <div data-step="4" class="hidden space-y-4">
-                    <div class="flex items-center gap-2 text-sm font-semibold text-[#0c2d59]">
-                        <span class="rounded-full bg-[#e8effc] px-2.5 py-1">5</span>
-                        Sincronização e resultado
+                    <div class="flex items-center gap-3 text-sm font-semibold text-[#0c2d59]">
+                        <span data-step-badge="4" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#eaf2ff] text-sm font-bold text-[#0c2d59] transition-colors">5</span>
+                        <span>Sincronização e resultado</span>
                     </div>
-                    <div class="rounded-3xl border border-[#dce8ff] bg-[#f4f8ff] p-4">
+                    <div class="rounded-3xl border border-[#dce8ff] bg-white p-4 shadow-sm">
                         <p class="text-sm font-semibold text-[#0c2d59]">Resumo da triagem</p>
                         <div id="summaryBox" class="mt-3 space-y-2 text-sm text-slate-700"></div>
                     </div>
-                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                    <div class="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700 shadow-sm">
                         <p class="font-semibold text-slate-900">Protocolo de triagem</p>
                         <p class="mt-2">A análise será enviada para processamento e o resultado será exibido com o risco estimado, a confiança e o aviso legal correspondente.</p>
                     </div>
@@ -237,8 +243,8 @@
                 </div>
 
                 <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-4">
-                    <button type="button" id="prevBtn" class="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">Voltar</button>
-                    <button type="button" id="nextBtn" class="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Continuar</button>
+                    <button type="button" id="prevBtn" class="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50">Voltar</button>
+                    <button type="button" id="nextBtn" class="rounded-2xl bg-[#0c2d59] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#427fe2]">Continuar</button>
                 </div>
             </form>
         </section>
@@ -246,6 +252,7 @@
 
     <script>
         const steps = Array.from(document.querySelectorAll('[data-step]'));
+        const stepBadges = Array.from(document.querySelectorAll('[data-step-badge]'));
         const nextBtn = document.getElementById('nextBtn');
         const prevBtn = document.getElementById('prevBtn');
         const progressBar = document.getElementById('progressBar');
@@ -296,6 +303,14 @@
         function updateStep() {
             steps.forEach((step, index) => {
                 step.classList.toggle('hidden', index !== currentStep);
+            });
+
+            stepBadges.forEach((badge, index) => {
+                const isActive = index === currentStep;
+                badge.classList.toggle('bg-[#427fe2]', isActive);
+                badge.classList.toggle('text-white', isActive);
+                badge.classList.toggle('bg-[#eaf2ff]', !isActive);
+                badge.classList.toggle('text-[#0c2d59]', !isActive);
             });
 
             prevBtn.disabled = currentStep === 0;
