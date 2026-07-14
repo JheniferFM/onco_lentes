@@ -20,19 +20,18 @@
         <header class="rounded-[2rem] border border-slate-200 bg-white p-6 text-slate-900 shadow-xl shadow-slate-300/70">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
-                    <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 p-2 ring-1 ring-slate-200">
+                    <div class="flex h-20 w-44 items-center justify-center rounded-2xl bg-slate-50 p-2 ring-1 ring-slate-200 sm:h-24 sm:w-56">
                         <img src="{{ asset('gemini-svg.svg') }}" alt="Logo OncoLentes" class="h-full w-full object-contain" />
                     </div>
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#427fe2]">OncoLentes</p>
                         <h1 class="text-2xl font-black text-slate-900">Resultado da triagem</h1>
+                        <p class="mt-1 text-sm text-slate-600">Análise assistida por IA para apoio à decisão clínica e monitoramento territorial do SUS.</p>
                     </div>
                 </div>
                 <a href="{{ route('login') }}" class="inline-flex items-center rounded-2xl bg-[#0c2d59] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#427fe2]">
                     Entrar
                 </a>
             </div>
-            <p class="mt-4 text-sm text-slate-600">Análise assistida por IA para apoio à decisão clínica e monitoramento territorial do SUS.</p>
         </header>
 
         <section class="mt-6 grid gap-6 lg:grid-cols-3">

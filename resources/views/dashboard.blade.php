@@ -10,12 +10,12 @@
     <main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <header class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-300/70">
             <div class="flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-50 p-2 ring-1 ring-slate-200">
+                <div class="flex flex-1 items-center gap-4">
+                    <div class="flex h-20 w-44 shrink-0 items-center justify-center rounded-2xl bg-slate-50 p-2 ring-1 ring-slate-200 sm:h-24 sm:w-56">
                         <img src="{{ asset('gemini-svg.svg') }}" alt="Logo OncoLentes" class="h-full w-full object-contain" />
                     </div>
-                    <div>
-                        <h1 class="text-2xl font-black leading-tight text-slate-900 sm:text-3xl">
+                    <div class="min-w-0 flex-1">
+                        <h1 class="text-xl font-black leading-tight text-slate-900 sm:text-2xl">
                             Fluxo assistido para captura e triagem de lesões cutâneas
                         </h1>
                         <p class="mt-1 text-sm text-slate-600">Triagem territorial com apoio assistido por IA</p>

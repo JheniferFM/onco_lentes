@@ -10,11 +10,10 @@
     <main class="mx-auto flex min-h-screen max-w-md items-center justify-center px-4 py-10">
         <div class="w-full rounded-[2rem] border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/80">
             <div class="flex items-center gap-3">
-                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 p-2 ring-1 ring-slate-200">
+                <div class="flex h-20 w-40 items-center justify-center rounded-2xl bg-slate-50 p-2 ring-1 ring-slate-200 sm:w-48">
                     <img src="{{ asset('gemini-svg.svg') }}" alt="Logo OncoLentes" class="h-full w-full object-contain" />
                 </div>
                 <div>
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#427fe2]">OncoLentes</p>
                     <h1 class="text-xl font-black text-slate-900">Acesso ao painel</h1>
                 </div>
             </div>
