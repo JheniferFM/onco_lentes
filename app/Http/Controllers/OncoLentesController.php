@@ -95,13 +95,8 @@ class OncoLentesController extends Controller
                 'percentual_confianca' => $resultado['confianca'],
             ]);
 
-            $imagemOriginalUrl = str_starts_with((string) $analysis->caminho_imagem_original, 'http')
-                ? $analysis->caminho_imagem_original
-                : Storage::url($analysis->caminho_imagem_original);
-
-            $imagemMelhoradaUrl = str_starts_with((string) $analysis->caminho_imagem_melhorada, 'http')
-                ? $analysis->caminho_imagem_melhorada
-                : Storage::url($analysis->caminho_imagem_melhorada);
+            $imagemOriginalUrl = $this->buildImageUrl($analysis->caminho_imagem_original);
+            $imagemMelhoradaUrl = $this->buildImageUrl($analysis->caminho_imagem_melhorada);
 
             return view('resultados', [
                 'analysis' => $analysis,
@@ -135,5 +130,32 @@ class OncoLentesController extends Controller
                 ->with('erro', 'Não foi possível concluir a análise agora. Verifique a imagem e tente novamente em instantes. Código: '.$requestId)
                 ->with('erro_detalhe', str($e->getMessage())->limit(220)->toString());
         }
+    }
+
+    public function buildImageUrl(?string $pathOrUrl): string
+    {
+        if ($pathOrUrl === null || $pathOrUrl === '') {
+            return '';
+        }
+
+        if (filter_var($pathOrUrl, FILTER_VALIDATE_URL)) {
+            return $pathOrUrl;
+        }
+
+        $normalizedPath = str_replace('\\', '/', (string) $pathOrUrl);
+        $publicDiskRoot = str_replace('\\', '/', Storage::disk('public')->path(''));
+        $normalizedRoot = rtrim($publicDiskRoot, '/');
+
+        if (str_starts_with($normalizedPath, '/') || preg_match('#^[A-Za-z]:/#', $normalizedPath) === 1) {
+            if ($normalizedRoot !== '' && str_starts_with($normalizedPath, $normalizedRoot.'/')) {
+                $relativePath = ltrim(substr($normalizedPath, strlen($normalizedRoot)), '/');
+
+                return '/storage/'.str_replace('\\', '/', $relativePath);
+            }
+
+            return $pathOrUrl;
+        }
+
+        return Storage::url($pathOrUrl);
     }
 }
