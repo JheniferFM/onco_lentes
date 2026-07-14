@@ -68,19 +68,7 @@ class OncoLentesController extends Controller
                 $classificationInput = str_starts_with($enhancedPath, 'http') ? $enhancedPath : Storage::disk('public')->path($enhancedPath);
                 $resultado = $this->replicateService->classifyAndMapRisk($classificationInput, $publicBaseUrl);
             } catch (Throwable $classificationError) {
-                // Modo degradado: mantém operação da plataforma mesmo em instabilidade externa.
-                $resultado = [
-                    'risco' => 'Médio',
-                    'confianca' => 0.00,
-                    'label_original' => 'classificacao_indisponivel',
-                ];
-
-                $pipelineNotice = 'A classificação automática ficou temporariamente indisponível. O caso foi registrado com risco provisório MÉDIO para triagem e revisão clínica.';
-
-                Log::warning('Classificação no Replicate indisponível; usando risco provisório', [
-                    'request_id' => $requestId,
-                    'message' => $classificationError->getMessage(),
-                ]);
+                dd($classificationError->getMessage(), $classificationError->getTraceAsString());
             }
 
             // 4) Persiste análise para histórico territorial do SUS.
