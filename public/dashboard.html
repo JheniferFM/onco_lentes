@@ -25,42 +25,43 @@
       };
     </script>
   </head>
-  <body class="min-h-screen bg-slate-50 font-sans text-slate-800">
+  <body class="min-h-screen bg-[#f4f7fb] font-sans text-slate-800">
     <div class="flex min-h-screen">
-      <aside class="hidden w-[260px] flex-col border-r border-slate-200 bg-white p-6 lg:flex">
+      <aside class="hidden w-[260px] flex-col border-r border-slate-200 bg-[#0c2d59] p-6 text-white lg:flex">
         <div class="flex items-center gap-3">
           <img src="/gemini-svg.svg" alt="Logo OncoLentes" class="h-14 w-40 object-contain" />
         </div>
 
-        <nav class="mt-8 space-y-1 text-sm font-medium text-slate-600">
-          <a href="#" class="flex items-center gap-3 rounded-xl bg-[#eaf2ff] px-3 py-3 text-[#0c2d59]">
+        <nav class="mt-8 space-y-1 text-sm font-medium text-slate-200">
+          <a href="#" class="flex items-center gap-3 rounded-xl bg-white/15 px-3 py-3 text-white">
             <span>◉</span>
             <span>Visão Geral</span>
           </a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100">📋 Casos</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100">🗺️ Mapas</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100">⏳ Filas</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100">🚩 Prioridades</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100">🏥 Unidades de Saúde</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100">📊 Relatórios</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100">⚙️ Configurações</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">📋 Casos</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">🗺️ Mapas</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">⏳ Filas</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">🚩 Prioridades</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">🏥 Unidades</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">📊 Relatórios</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">⚙️ Configurações</a>
         </nav>
       </aside>
 
       <main class="flex-1 overflow-y-auto p-6 lg:p-8">
-        <header class="flex flex-col gap-4 border-b border-slate-200 pb-6 lg:flex-row lg:items-center lg:justify-between">
+        <header class="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-navy">Dashboard</h1>
-            <p class="mt-1 text-sm text-slate-500">Inteligência territorial em tempo real</p>
+            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#427fe2]">Painel de operação</p>
+            <h1 class="text-2xl font-bold text-[#0c2d59]">Dashboard de triagem</h1>
+            <p class="mt-1 text-sm text-slate-500">Central de monitoramento e priorização de casos</p>
           </div>
           <div class="flex flex-wrap items-center gap-3">
-            <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600">
+            <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
               <span>📅</span> 14 Jul 2026
             </div>
             <button class="rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700">Filtros</button>
-            <button class="rounded-full bg-navy px-3 py-2 text-sm font-semibold text-white">Exportar</button>
+            <button class="rounded-full bg-[#0c2d59] px-3 py-2 text-sm font-semibold text-white">Exportar</button>
             <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2">
-              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#eaf2ff] font-semibold text-brand">GS</div>
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#eaf2ff] font-semibold text-[#427fe2]">GS</div>
               <div class="text-sm">
                 <p class="font-semibold text-slate-800">Gestor SUS</p>
                 <p class="text-slate-500">Nível: Estadual</p>
@@ -75,7 +76,7 @@
               <p class="text-sm font-semibold text-slate-600">Casos no período</p>
               <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">↑ 18,6%</span>
             </div>
-            <p class="mt-4 text-3xl font-bold text-navy">4.892</p>
+            <p class="mt-4 text-3xl font-bold text-[#0c2d59]">4.892</p>
             <div class="mt-4 h-16 rounded-xl bg-gradient-to-r from-[#eaf2ff] to-white p-2">
               <div class="flex h-full items-end gap-1">
                 <div class="h-5 w-3 rounded bg-[#427fe2]"></div>
@@ -121,9 +122,12 @@
         </section>
 
         <section class="mt-8 grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
-          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <div class="flex items-center justify-between">
-              <h2 class="text-lg font-semibold text-navy">Mapa de calor - Casos por município</h2>
+              <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#427fe2]">Mapa operacional</p>
+                <h2 class="mt-1 text-lg font-semibold text-[#0c2d59]">Casos por município</h2>
+              </div>
               <div class="flex gap-2">
                 <button class="rounded-full border border-slate-200 px-2 py-1 text-sm">+</button>
                 <button class="rounded-full border border-slate-200 px-2 py-1 text-sm">−</button>
@@ -148,8 +152,8 @@
             </div>
           </article>
 
-          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-lg font-semibold text-navy">Casos por estado</h2>
+          <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-[#0c2d59]">Casos por estado</h2>
             <div class="mt-5 rounded-2xl border border-slate-200 bg-[#f8fbff] p-4">
               <div class="flex items-center justify-center rounded-2xl border border-slate-200 bg-gradient-to-br from-[#eaf2ff] to-white p-4">
                 <div class="relative h-44 w-44 rounded-full border-[18px] border-[#427fe2]/20"></div>
@@ -167,10 +171,13 @@
         </section>
 
         <section class="mt-8 grid gap-6 xl:grid-cols-[1.1fr_0.55fr_0.75fr]">
-          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <div class="flex items-center justify-between">
-              <h2 class="text-lg font-semibold text-navy">Fila de análise</h2>
-              <a href="#" class="text-sm font-semibold text-brand">Ver todas as filas →</a>
+              <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#427fe2]">Fila ativa</p>
+                <h2 class="mt-1 text-lg font-semibold text-[#0c2d59]">Fila de análise</h2>
+              </div>
+              <a href="#" class="text-sm font-semibold text-[#427fe2]">Ver todas as filas →</a>
             </div>
             <div class="mt-4 overflow-x-auto">
               <table class="min-w-full text-left text-sm">
@@ -210,15 +217,15 @@
             </div>
           </article>
 
-          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-lg font-semibold text-navy">Prioridades</h2>
+          <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-[#0c2d59]">Prioridades</h2>
             <div class="mt-4 flex h-52 items-center justify-center">
               <canvas id="priorityChart" class="max-h-48 max-w-48"></canvas>
             </div>
           </article>
 
-          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-lg font-semibold text-navy">Evolução de casos</h2>
+          <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-[#0c2d59]">Evolução de casos</h2>
             <div class="mt-4 h-52">
               <canvas id="trendChart"></canvas>
             </div>
