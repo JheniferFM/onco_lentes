@@ -65,7 +65,11 @@ class OncoLentesController extends Controller
             // 3) Classifica risco da lesão com modelo de classificação no Replicate.
             $etapa = 'classificacao_replicate';
             try {
-                $classificationInput = str_starts_with($enhancedPath, 'http') ? $enhancedPath : Storage::disk('public')->path($enhancedPath);
+                // Garante que o input seja sempre uma URL HTTP/HTTPS válida para a API externa conseguir acessar.
+                $classificationInput = str_starts_with($enhancedPath, 'http')
+                    ? $enhancedPath
+                    : rtrim($publicBaseUrl, '/') . Storage::disk('public')->url($enhancedPath);
+
                 $resultado = $this->replicateService->classifyAndMapRisk($classificationInput, $publicBaseUrl);
             } catch (Throwable $classificationError) {
                 dd($classificationError->getMessage(), $classificationError->getTraceAsString());
