@@ -8,14 +8,14 @@
 </head>
 <body class="min-h-screen bg-[#f4f5f7] text-slate-800">
     <main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-        <header class="rounded-[2rem] border border-slate-200 bg-[#f4f5f7] p-5 shadow-sm sm:p-6">
+        <header class="border-b border-slate-200 bg-[#f4f5f7] py-4 sm:py-5">
             <div class="flex items-center justify-between gap-4">
                 <div class="flex-1"></div>
                 <div class="flex flex-1 justify-center">
-                    <img src="{{ asset('gemini-svg.svg') }}" alt="Logo OncoLentes" class="h-20 w-56 object-contain sm:h-24 sm:w-64" />
+                    <img src="{{ asset('gemini-svg.svg') }}" alt="Logo OncoLentes" class="h-24 w-64 object-contain sm:h-28 sm:w-72" />
                 </div>
                 <div class="flex flex-1 justify-end">
-                    <a href="{{ route('login') }}" class="inline-flex items-center rounded-full bg-[#0c2d59] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#427fe2]">
+                    <a href="{{ route('login') }}" class="inline-flex items-center bg-transparent px-0 py-0 text-sm font-semibold text-[#0c2d59] transition hover:text-[#427fe2]">
                         Login
                     </a>
                 </div>
