@@ -49,7 +49,7 @@ class HuggingFaceService
             ->post($this->modelUrl);
 
         if ($response->failed()) {
-            throw new Exception('Falha ao classificar imagem na Hugging Face.');
+            throw new Exception('Falha ao classificar imagem na Hugging Face: '.$response->body());
         }
 
         $parsed = $this->normalizePredictions($response->json());

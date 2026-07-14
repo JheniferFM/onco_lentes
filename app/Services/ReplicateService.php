@@ -11,7 +11,7 @@ class ReplicateService
 {
     private string $baseUrl = 'https://api.replicate.com/v1';
 
-    public function enhanceAndStore(string $localImagePath): string
+    public function enhanceAndStore(string $localImagePath, ?string $publicBaseUrl = null): string
     {
         $token = (string) config('services.replicate.token');
 
@@ -28,7 +28,8 @@ class ReplicateService
         if ($modelVersion === '') {
             throw new Exception('Versão do modelo Real-ESRGAN não configurada. Defina REPLICATE_REAL_ESRGAN_VERSION no .env.');
         }
-        $imageDataUri = $this->toDataUri($localImagePath);
+
+        $imageInput = $this->resolveImageInput($localImagePath, $publicBaseUrl);
 
         $predictionResponse = Http::withToken($token)
             ->acceptJson()
@@ -36,12 +37,12 @@ class ReplicateService
             ->post("{$this->baseUrl}/predictions", [
                 'version' => $modelVersion,
                 'input' => [
-                    'image' => $imageDataUri,
+                    'image' => $imageInput,
                 ],
             ]);
 
         if ($predictionResponse->failed()) {
-            throw new Exception('Falha ao enviar imagem para o Replicate.');
+            throw new Exception('Falha ao enviar imagem para o Replicate: '.$predictionResponse->body());
         }
 
         $prediction = $predictionResponse->json();
@@ -81,7 +82,7 @@ class ReplicateService
                 ->get("{$this->baseUrl}/predictions/{$predictionId}");
 
             if ($response->failed()) {
-                throw new Exception('Erro ao consultar status da predição no Replicate.');
+                throw new Exception('Erro ao consultar status da predição no Replicate: '.$response->body());
             }
 
             $payload = $response->json();
@@ -132,6 +133,54 @@ class ReplicateService
         $mime = mime_content_type($path) ?: 'image/jpeg';
 
         return 'data:'.$mime.';base64,'.base64_encode($binary);
+    }
+
+    private function resolveImageInput(string $localImagePath, ?string $publicBaseUrl = null): string
+    {
+        $publicUrl = $this->toPublicStorageUrl($localImagePath, $publicBaseUrl);
+
+        if ($publicUrl !== null) {
+            return $publicUrl;
+        }
+
+        return $this->toDataUri($localImagePath);
+    }
+
+    private function toPublicStorageUrl(string $localImagePath, ?string $publicBaseUrl = null): ?string
+    {
+        if (! $this->isUsablePublicBaseUrl($publicBaseUrl)) {
+            return null;
+        }
+
+        $diskRoot = Storage::disk('public')->path('');
+        $normalizedRoot = str_replace('\\', '/', rtrim($diskRoot, '\\/'));
+        $normalizedPath = str_replace('\\', '/', $localImagePath);
+
+        if (! str_starts_with($normalizedPath, $normalizedRoot.'/')) {
+            return null;
+        }
+
+        $relativePath = ltrim(substr($normalizedPath, strlen($normalizedRoot)), '/');
+        $storagePath = '/storage/'.str_replace('\\', '/', $relativePath);
+        $baseUrl = rtrim((string) $publicBaseUrl, '/');
+
+        return $baseUrl.$storagePath;
+    }
+
+    private function isUsablePublicBaseUrl(?string $publicBaseUrl): bool
+    {
+        if (! is_string($publicBaseUrl) || $publicBaseUrl === '') {
+            return false;
+        }
+
+        $scheme = strtolower((string) parse_url($publicBaseUrl, PHP_URL_SCHEME));
+        $host = strtolower((string) parse_url($publicBaseUrl, PHP_URL_HOST));
+
+        if ($scheme !== 'https' || $host === '') {
+            return false;
+        }
+
+        return ! in_array($host, ['localhost', '127.0.0.1'], true);
     }
 
     private function guessExtensionFromUrl(string $url): string

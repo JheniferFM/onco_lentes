@@ -41,9 +41,10 @@ class OncoLentesController extends Controller
             // 1) Salva imagem original em armazenamento público.
             $originalPath = $request->file('imagem')->store('analises/originais', 'public');
             $originalAbsolute = Storage::disk('public')->path($originalPath);
+            $publicBaseUrl = $request->getSchemeAndHttpHost();
 
             // 2) Melhora imagem com Real-ESRGAN via Replicate.
-            $enhancedPath = $this->replicateService->enhanceAndStore($originalAbsolute);
+            $enhancedPath = $this->replicateService->enhanceAndStore($originalAbsolute, $publicBaseUrl);
             $enhancedAbsolute = Storage::disk('public')->path($enhancedPath);
 
             // 3) Classifica risco da lesão com modelo da Hugging Face.
