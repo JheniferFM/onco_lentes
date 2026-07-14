@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\PatientAnalysis;
-use App\Services\HuggingFaceService;
 use App\Services\ReplicateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +13,6 @@ class OncoLentesController extends Controller
 {
     public function __construct(
         private readonly ReplicateService $replicateService,
-        private readonly HuggingFaceService $huggingFaceService,
     ) {
     }
 
@@ -71,32 +69,23 @@ class OncoLentesController extends Controller
 
             $enhancedAbsolute = Storage::disk('public')->path($enhancedPath);
 
-            // 3) Classifica risco da lesão com modelo da Hugging Face.
-            $etapa = 'classificacao_huggingface';
+            // 3) Classifica risco da lesão com modelo de classificação no Replicate.
+            $etapa = 'classificacao_replicate';
             try {
-                $resultado = $this->huggingFaceService->classify($enhancedAbsolute);
-            } catch (Throwable $huggingFaceError) {
-                $hfMessage = strtolower($huggingFaceError->getMessage());
-
-                if (! str_contains($hfMessage, 'could not resolve host')
-                    && ! str_contains($hfMessage, 'curl error 6')
-                    && ! str_contains($hfMessage, 'timed out')
-                    && ! str_contains($hfMessage, 'failed to connect')) {
-                    throw $huggingFaceError;
-                }
-
-                // Modo degradado para indisponibilidade externa da API de classificação.
+                $resultado = $this->replicateService->classifyAndMapRisk($enhancedAbsolute, $publicBaseUrl);
+            } catch (Throwable $classificationError) {
+                // Modo degradado: mantém operação da plataforma mesmo em instabilidade externa.
                 $resultado = [
                     'risco' => 'Médio',
                     'confianca' => 0.00,
                     'label_original' => 'classificacao_indisponivel',
                 ];
 
-                $pipelineNotice = 'A classificação automática (Hugging Face) ficou temporariamente indisponível por rede. O caso foi registrado com risco provisório MÉDIO para triagem e revisão clínica.';
+                $pipelineNotice = 'A classificação automática ficou temporariamente indisponível. O caso foi registrado com risco provisório MÉDIO para triagem e revisão clínica.';
 
-                Log::warning('Hugging Face indisponível por rede; usando risco provisório', [
+                Log::warning('Classificação no Replicate indisponível; usando risco provisório', [
                     'request_id' => $requestId,
-                    'message' => $huggingFaceError->getMessage(),
+                    'message' => $classificationError->getMessage(),
                 ]);
             }
 

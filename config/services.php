@@ -37,13 +37,8 @@ return [
 
     'replicate' => [
         'token' => env('REPLICATE_API_TOKEN'),
-        'model' => env('REPLICATE_MODEL', 'nightmareai/real-esrgan'),
-        'version' => env('REPLICATE_REAL_ESRGAN_VERSION', '42fed1c4974f88d4f1d6f0de12f4f6b5f0a8f6fadc5f59ab2338f5b6c15d10f2'),
-    ],
-
-    'huggingface' => [
-        'token' => env('HUGGINGFACE_API_TOKEN'),
-        'model_url' => env('HUGGINGFACE_MODEL_ENDPOINT', 'https://api-inference.huggingface.co/models/dima806/skin_cancer_image_detection'),
+        'enhance_version' => env('REPLICATE_REAL_ESRGAN_VERSION', '42fed1c4974f88d4f1d6f0de12f4f6b5f0a8f6fadc5f59ab2338f5b6c15d10f2'),
+        'classifier_model' => env('REPLICATE_CLASSIFIER_MODEL', 'lucataco/skin-lesion-classification:8cfb62e4'),
     ],
 
 ];
