@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -27,23 +28,23 @@
   </head>
   <body class="min-h-screen bg-[#f4f7fb] font-sans text-slate-800">
     <div class="flex min-h-screen">
-      <aside class="hidden w-[260px] flex-col border-r border-slate-200 bg-[#0c2d59] p-6 text-white lg:flex">
+      <aside class="hidden w-[260px] flex-col border-r border-slate-200 bg-white p-6 text-slate-800 shadow-sm lg:flex">
         <div class="flex items-center gap-3">
           <img src="/gemini-svg.svg" alt="Logo OncoLentes" class="h-14 w-40 object-contain" />
         </div>
 
-        <nav class="mt-8 space-y-1 text-sm font-medium text-slate-200">
-          <a href="#" class="flex items-center gap-3 rounded-xl bg-white/15 px-3 py-3 text-white">
-            <span>◉</span>
+        <nav class="mt-8 space-y-1 text-sm font-medium text-slate-600">
+          <a href="#" class="flex items-center gap-3 rounded-xl bg-[#eaf2ff] px-3 py-3 text-[#0c2d59]">
+            <i class="bi bi-house-door"></i>
             <span>Visão Geral</span>
           </a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">📋 Casos</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">🗺️ Mapas</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">⏳ Filas</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">🚩 Prioridades</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">🏥 Unidades</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">📊 Relatórios</a>
-          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-white/10">⚙️ Configurações</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100"><i class="bi bi-journal-medical"></i> Casos</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100"><i class="bi bi-map"></i> Mapas</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100"><i class="bi bi-clock-history"></i> Filas</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100"><i class="bi bi-flag"></i> Prioridades</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100"><i class="bi bi-hospital"></i> Unidades</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100"><i class="bi bi-bar-chart-line"></i> Relatórios</a>
+          <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-100"><i class="bi bi-gear"></i> Configurações</a>
         </nav>
       </aside>
 
@@ -56,7 +57,7 @@
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
-              <span>📅</span> 14 Jul 2026
+              <i class="bi bi-calendar3"></i> 14 Jul 2026
             </div>
             <button class="rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700">Filtros</button>
             <button class="rounded-full bg-[#0c2d59] px-3 py-2 text-sm font-semibold text-white">Exportar</button>
@@ -127,25 +128,14 @@
                 <h2 class="mt-1 text-lg font-semibold text-[#0c2d59]">Casos por município</h2>
               </div>
               <div class="flex gap-2">
-                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm">+</button>
-                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm">−</button>
-                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm">⤢</button>
+                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm"><i class="bi bi-plus-lg"></i></button>
+                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm"><i class="bi bi-dash-lg"></i></button>
+                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm"><i class="bi bi-arrows-fullscreen"></i></button>
               </div>
             </div>
-            <div class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-[#0c2d59] via-[#2f5fb8] to-[#8ec3ff] p-6">
-              <div class="relative h-[300px] overflow-hidden rounded-2xl border border-white/20 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.25),_transparent_35%),linear-gradient(135deg,_rgba(255,255,255,0.08),_rgba(255,255,255,0.03))]">
-                <svg viewBox="0 0 620 420" class="absolute inset-0 h-full w-full">
-                  <path d="M130 160c28-39 71-70 121-80 42-9 92-4 131 18 34 19 61 50 83 85 17 28 25 63 22 94-2 29-12 58-30 81-21 27-52 48-85 58-39 12-82 13-122 4-40-8-77-28-107-56-31-29-53-68-58-110-5-37 2-76 24-109 10-15 22-28 37-38z" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.45)" stroke-width="2" />
-                  <circle cx="170" cy="160" r="26" fill="#ef4444" fill-opacity="0.75" />
-                  <circle cx="278" cy="240" r="20" fill="#f59e0b" fill-opacity="0.75" />
-                  <circle cx="392" cy="184" r="24" fill="#3b82f6" fill-opacity="0.75" />
-                  <circle cx="232" cy="300" r="18" fill="#10b981" fill-opacity="0.75" />
-                  <circle cx="430" cy="283" r="26" fill="#f59e0b" fill-opacity="0.7" />
-                </svg>
-                <div class="absolute left-[16%] top-[22%] h-16 w-20 rounded-full bg-[#f59e0b]/40 blur-2xl"></div>
-                <div class="absolute left-[28%] top-[38%] h-24 w-24 rounded-full bg-[#ef4444]/40 blur-2xl"></div>
-                <div class="absolute left-[48%] top-[24%] h-20 w-20 rounded-full bg-[#22c55e]/40 blur-2xl"></div>
-                <div class="absolute bottom-[20%] left-[20%] h-20 w-20 rounded-full bg-[#3b82f6]/40 blur-2xl"></div>
+            <div class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2">
+              <div class="relative h-[300px] overflow-hidden rounded-2xl border border-slate-200">
+                <img src="/municipio-map.png" alt="Mapa operacional por município" class="h-full w-full object-cover" />
               </div>
             </div>
             <div class="mt-4 flex items-center gap-2 text-sm text-slate-600">
@@ -163,18 +153,8 @@
               <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500">+12%</span>
             </div>
             <div class="mt-5 rounded-2xl border border-slate-200 bg-[#f8fbff] p-4">
-              <div class="flex items-center justify-center rounded-2xl border border-slate-200 bg-gradient-to-br from-[#eaf2ff] to-white p-4">
-                <svg viewBox="0 0 240 200" class="h-48 w-full">
-                  <path d="M48 68c12-19 32-33 56-38 18-4 38-2 56 6 18 8 33 23 46 40 8 10 13 22 14 35 1 14-4 29-15 38-12 10-28 15-44 16-24 2-48-5-67-19-20-15-33-38-36-63-2-15 0-31 6-45 3-6 7-11 12-14z" fill="#dce8ff" stroke="#427fe2" stroke-width="2" />
-                  <rect x="58" y="72" width="30" height="22" rx="5" fill="#427fe2" />
-                  <rect x="97" y="72" width="24" height="22" rx="5" fill="#4f80e5" />
-                  <rect x="126" y="72" width="28" height="22" rx="5" fill="#6fa8ff" />
-                  <rect x="84" y="102" width="28" height="22" rx="5" fill="#5b8ee8" />
-                  <rect x="118" y="102" width="38" height="22" rx="5" fill="#3a6dc4" />
-                  <rect x="62" y="128" width="24" height="18" rx="5" fill="#7bb2ff" />
-                  <rect x="94" y="128" width="26" height="18" rx="5" fill="#427fe2" />
-                  <rect x="126" y="128" width="28" height="18" rx="5" fill="#5b8ee8" />
-                </svg>
+              <div class="flex items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white p-1">
+                <img src="/regiao-map.png" alt="Mapa por região" class="h-48 w-full rounded-xl object-cover" />
               </div>
             </div>
             <div class="mt-4 overflow-hidden rounded-2xl border border-slate-100">
