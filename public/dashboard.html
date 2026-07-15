@@ -91,7 +91,7 @@
             <p class="text-sm font-semibold text-slate-600">Municípios com casos</p>
             <p class="mt-4 text-3xl font-bold text-[#0c2d59]">842 de 5.570</p>
             <div class="mt-5 flex items-center gap-2 text-sm text-slate-500">
-              <span class="text-2xl">🏢</span> Cobertura regional crescente
+              <i class="bi bi-buildings"></i> Cobertura regional crescente
             </div>
           </article>
 
@@ -99,7 +99,7 @@
             <p class="text-sm font-semibold text-slate-600">Casos por 100 mil hab.</p>
             <p class="mt-4 text-3xl font-bold text-[#0c2d59]">23,7</p>
             <div class="mt-5 flex items-center gap-2 text-sm text-slate-500">
-              <span class="text-2xl">👥</span> Média nacional
+              <i class="bi bi-people"></i> Média nacional
             </div>
           </article>
 
@@ -107,7 +107,7 @@
             <p class="text-sm font-semibold text-slate-600">Em análise</p>
             <p class="mt-4 text-3xl font-bold text-[#0c2d59]">1.256</p>
             <div class="mt-5 flex items-center gap-2 text-sm text-slate-500">
-              <span class="text-2xl">⏱️</span> 25,7% do total
+              <i class="bi bi-stopwatch"></i> 25,7% do total
             </div>
           </article>
 
@@ -115,69 +115,7 @@
             <p class="text-sm font-semibold text-slate-600">Encaminhamentos prioritários</p>
             <p class="mt-4 text-3xl font-bold text-[#0c2d59]">312</p>
             <div class="mt-5 flex items-center gap-2 text-sm text-slate-500">
-              <span class="text-2xl">🚩</span> 6,4% do total
-            </div>
-          </article>
-        </section>
-
-        <section class="mt-8 grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
-          <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#427fe2]">Mapa operacional</p>
-                <h2 class="mt-1 text-lg font-semibold text-[#0c2d59]">Casos por município</h2>
-              </div>
-              <div class="flex gap-2">
-                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm"><i class="bi bi-plus-lg"></i></button>
-                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm"><i class="bi bi-dash-lg"></i></button>
-                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm"><i class="bi bi-arrows-fullscreen"></i></button>
-              </div>
-            </div>
-            <div class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2">
-              <div class="relative h-[300px] overflow-hidden rounded-2xl border border-slate-200">
-                <img src="/municipio-map.png" alt="Mapa operacional por município" class="h-full w-full object-cover" />
-              </div>
-            </div>
-            <div class="mt-4 flex items-center gap-2 text-sm text-slate-600">
-              <span class="h-2.5 w-10 rounded-full bg-[#dbeafe]"></span>
-              <span class="h-2.5 w-10 rounded-full bg-[#60a5fa]"></span>
-              <span class="h-2.5 w-10 rounded-full bg-[#2563eb]"></span>
-              <span class="h-2.5 w-10 rounded-full bg-[#1d4ed8]"></span>
-              <span class="ml-2 font-medium">Baixo → Alto</span>
-            </div>
-          </article>
-
-          <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div class="flex items-center justify-between">
-              <h2 class="text-lg font-semibold text-[#0c2d59]">Casos por estado</h2>
-              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500">+12%</span>
-            </div>
-            <div class="mt-5 rounded-2xl border border-slate-200 bg-[#f8fbff] p-4">
-              <div class="flex items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white p-1">
-                <img src="/regiao-map.png" alt="Mapa por região" class="h-48 w-full rounded-xl object-cover" />
-              </div>
-            </div>
-            <div class="mt-4 overflow-hidden rounded-2xl border border-slate-100">
-              <table class="min-w-full text-sm">
-                <thead class="bg-slate-50 text-slate-500">
-                  <tr>
-                    <th class="px-3 py-2 text-left">Estado</th>
-                    <th class="px-3 py-2 text-right">Casos</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-slate-700">
-                  <tr><td class="px-3 py-2">São Paulo</td><td class="px-3 py-2 text-right">1.245</td></tr>
-                  <tr><td class="px-3 py-2">Minas Gerais</td><td class="px-3 py-2 text-right">652</td></tr>
-                  <tr><td class="px-3 py-2">Rio Grande do Sul</td><td class="px-3 py-2 text-right">487</td></tr>
-                  <tr><td class="px-3 py-2">Paraná</td><td class="px-3 py-2 text-right">432</td></tr>
-                  <tr><td class="px-3 py-2">Bahia</td><td class="px-3 py-2 text-right">391</td></tr>
-                  <tr><td class="px-3 py-2">Santa Catarina</td><td class="px-3 py-2 text-right">321</td></tr>
-                  <tr><td class="px-3 py-2">Rio de Janeiro</td><td class="px-3 py-2 text-right">287</td></tr>
-                  <tr><td class="px-3 py-2">Goiás</td><td class="px-3 py-2 text-right">245</td></tr>
-                  <tr><td class="px-3 py-2">Pernambuco</td><td class="px-3 py-2 text-right">218</td></tr>
-                  <tr><td class="px-3 py-2">Outros</td><td class="px-3 py-2 text-right">614</td></tr>
-                </tbody>
-              </table>
+              <i class="bi bi-flag"></i> 6,4% do total
             </div>
           </article>
         </section>
@@ -278,6 +216,47 @@
             <div class="mt-4 h-60">
               <canvas id="trendChart"></canvas>
             </div>
+          </article>
+        </section>
+
+        <section class="mt-8 grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
+          <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#427fe2]">Mapa operacional</p>
+                <h2 class="mt-1 text-lg font-semibold text-[#0c2d59]">Casos por município</h2>
+              </div>
+              <div class="flex gap-2">
+                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm"><i class="bi bi-plus-lg"></i></button>
+                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm"><i class="bi bi-dash-lg"></i></button>
+                <button class="rounded-full border border-slate-200 px-2 py-1 text-sm"><i class="bi bi-arrows-fullscreen"></i></button>
+              </div>
+            </div>
+            <div class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2">
+              <div class="relative h-[300px] overflow-hidden rounded-2xl border border-slate-200">
+                <img src="/municipio-map.png" alt="Mapa operacional por município" class="h-full w-full object-cover" />
+              </div>
+            </div>
+            <div class="mt-4 flex items-center gap-2 text-sm text-slate-600">
+              <span class="h-2.5 w-10 rounded-full bg-[#dbeafe]"></span>
+              <span class="h-2.5 w-10 rounded-full bg-[#60a5fa]"></span>
+              <span class="h-2.5 w-10 rounded-full bg-[#2563eb]"></span>
+              <span class="h-2.5 w-10 rounded-full bg-[#1d4ed8]"></span>
+              <span class="ml-2 font-medium">Baixo → Alto</span>
+            </div>
+          </article>
+
+          <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-semibold text-[#0c2d59]">Mapa por região</h2>
+              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500">Regional</span>
+            </div>
+            <div class="mt-5 rounded-2xl border border-slate-200 bg-[#f8fbff] p-4">
+              <div class="flex items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white p-1">
+                <img src="/regiao-map.png" alt="Mapa por região" class="h-48 w-full rounded-xl object-cover" />
+              </div>
+            </div>
+            <p class="mt-4 text-sm text-slate-500">Visualização consolidada da cobertura regional para apoio à priorização.</p>
           </article>
         </section>
       </main>
