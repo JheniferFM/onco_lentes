@@ -20,7 +20,7 @@
 
             <p class="mt-5 text-sm text-slate-600">Entre para continuar a triagem e acompanhar os resultados do fluxo territorial.</p>
 
-            <form action="{{ route('dashboard') }}" method="GET" class="mt-6 space-y-4">
+            <form action="/dashboard.html" method="GET" class="mt-6 space-y-4" onsubmit="event.preventDefault(); window.location.assign('/dashboard.html');">
                 <label class="block text-sm font-semibold text-slate-700">
                     E-mail
                     <input type="email" value="admin@oncolentes.local" class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm focus:border-[#427fe2] focus:outline-none focus:ring-2 focus:ring-[#dce8ff]" />
